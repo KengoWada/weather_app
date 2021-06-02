@@ -16,23 +16,61 @@
     <h1 class="text-center mt-4">CITY WEATHER TODAY</h1>
     <div class="container mt-4">
       <div class="row">
+        <br />
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Select City
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            {% for city in cities %}
+            <li>
+              <a class="dropdown-item" href="{% url 'city_weather' city %}"
+                >{{ city|title }}</a
+              >
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <br /><br />
+
+        {% for city, weather in weather.items %}
         <div class="col-sm-6 col-md-4">
-          <div class="card" style="width: 18rem">
+          <div class="card mb-4" style="width: 18rem">
             <div class="card-body">
-              <h5 class="card-title text-center">Kampala</h5>
+              <h5 class="card-title text-center">{{ city|title }}</h5>
               <p class="card-text">
-                <b>Temp(°C):</b> 23
+                <b>Temp(°C):</b>
+                {{ weather.data.instant.details.air_temperature }}
                 <br />
-                <b></b>
+                <b>Humidity(%):</b>
+                {{ weather.data.instant.details.relative_humidity }}
+                <br />
+                <b>Precipitation(mm):</b> 30
+                <br />
+                <b>Air Pressure(hPa):</b>
+                {{ weather.data.instant.details.air_pressure_at_sea_level }}
+                <br />
+                <b>Wind Direction(°):</b>
+                {{ weather.data.instant.details.wind_from_direction }}
+                <br />
+                <b>Wind Speed(m/s):</b>
+                {{weather.data.instant.details.wind_speed }}
               </p>
               <div class="text-center">
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="{% url 'city_weather' city %}" class="btn btn-primary"
+                  >See More</a
+                >
               </div>
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-md-4">One of three columns</div>
-        <div class="col-sm-6 col-md-4">One of three columns</div>
+        {% endfor %}
       </div>
     </div>
 

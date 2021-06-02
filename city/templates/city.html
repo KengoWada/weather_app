@@ -1,0 +1,116 @@
+{% load my_extras %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <title>WEATHER APP</title>
+  </head>
+  <body>
+    <h1 class="text-center mt-4">CITY WEATHER TODAY</h1>
+    <div class="container mt-4">
+      <div class="row">
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Select City
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            {% for city_name in cities %}
+            <li>
+              <a class="dropdown-item" href="{% url 'city_weather' city %}">
+                {{ city_name|title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <br /><br />
+        <h3 class="text-center">{{ city|title }}</h3>
+        <p class="text-left">
+          <b>Temp:</b>
+          {{ weather.data.instant.details.air_temperature }} °C
+          <br />
+          <b>Humidity:</b>
+          {{ weather.data.instant.details.relative_humidity }} %
+          <br />
+          <b>Air Pressure:</b>
+          {{ weather.data.instant.details.air_pressure_at_sea_level }} hPa
+          <br />
+          <b>Wind Direction:</b>
+          {{ weather.data.instant.details.wind_from_direction }} °
+          <br />
+          <b>Wind Speed:</b>
+          {{weather.data.instant.details.wind_speed }} m/s
+        </p>
+
+        <div class="col-sm-6 col-md-4">
+          <div class="card mb-4" style="width: 18rem">
+            <div class="card-body">
+              <h5 class="card-title text-center">Next 1 Hour</h5>
+              <p class="card-text">
+                <b>Summary:</b>
+                {{ weather.data.next_1_hours.summary.symbol_code|weather }}
+                <br />
+                <b>Precipitation(mm):</b>
+                {{ weather.data.next_1_hours.details.precipitation_amount }}
+                <br />
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card mb-4" style="width: 18rem">
+            <div class="card-body">
+              <h5 class="card-title text-center">Next 6 Hours</h5>
+              <p class="card-text">
+                <b>Summary:</b>
+                {{ weather.data.next_6_hours.summary.symbol_code|weather }}
+                <br />
+                <b>Precipitation(mm):</b>
+                {{ weather.data.next_6_hours.details.precipitation_amount }}
+                <br />
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card mb-4" style="width: 18rem">
+            <div class="card-body">
+              <h5 class="card-title text-center">Next 12 Hours</h5>
+              <p class="card-text">
+                <b>Summary:</b>
+                {{ weather.data.next_12_hours.summary.symbol_code|weather }}
+                <br />
+                {% if weather.data.next_12_hours.summary.precipitation_amount %}
+                <b>Precipitation(mm):</b>
+                {{ weather.data.next_12_hours.details.precipitation_amount }}
+                <br />
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
